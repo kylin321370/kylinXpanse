@@ -1,19 +1,9 @@
-import React, {useState} from 'react';
-import {Aws,Google,Upcloud} from './SvgObject';
+import React from 'react';
 import TabServicesChild from "./TabServicesChild";
 import { HomeOutlined, UserOutlined } from '@ant-design/icons';
 import { Breadcrumb } from 'antd';
 import {Link} from "react-router-dom";
 
-const providerList = [
-  {
-    picture: Aws
-  }, {
-    picture: Google
-  }, {
-    picture: Upcloud
-  }
-]
 function Services() {
     return(
         <>
