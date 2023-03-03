@@ -4,14 +4,14 @@ import type { ColumnsType, TableProps } from 'antd/es/table';
 
   interface DataType {
     key: React.Key;
-    Category: string;
-    MiddleWare: string;
+    Property: string;
+    Information: string;
   }
 
   const columns: ColumnsType<DataType> = [
     {
-      title: 'Category',
-      dataIndex: 'Category',
+      title: 'Property',
+      dataIndex: 'Property',
       filters: [
         {
           text: 'Joe',
@@ -52,8 +52,8 @@ import type { ColumnsType, TableProps } from 'antd/es/table';
       width: '20%',
     },
     {
-      title: 'MiddleWare',
-      dataIndex: 'MiddleWare',
+      title: 'Information',
+      dataIndex: 'Information',
       filters: [
         {
           text: 'London',
@@ -73,38 +73,42 @@ import type { ColumnsType, TableProps } from 'antd/es/table';
   const data: DataType[] = [
     {
       key: '1',
-      Category: 'Provider',
-      MiddleWare: 'New York No. 1 Lake Park',
-    },
-    {
+      Property: 'Category',
+      Information: 'MiddleWare',
+    },{
       key: '2',
-      Category: 'Service Version',
-      MiddleWare: 'V1.0',
+      Property: 'Provider',
+      Information: 'New York No. 1 Lake Park',
     },
     {
       key: '3',
-      Category: 'Billing Mode',
-      MiddleWare: 'Monthly Per Service Instance',
+      Property: 'Service Version',
+      Information: 'V1.0',
     },
     {
       key: '4',
-      Category: 'Regullar Pricing',
-      MiddleWare: '￥140.00',
+      Property: 'Billing Mode',
+      Information: 'Monthly Per Service Instance',
     },
     {
       key: '5',
-      Category: 'Register Time',
-      MiddleWare: '2022-08-26 T08:25:15:208Z',
+      Property: 'Regullar Pricing',
+      Information: '￥140.00',
     },
     {
       key: '6',
-      Category: 'Status',
-      MiddleWare: '2022-08-26 T08:25:15:208Z',
+      Property: 'Register Time',
+      Information: '2022-08-26 T08:25:15:208Z',
     },
     {
       key: '7',
-      Category: 'Flavors',
-      MiddleWare: 'London No. 2 Lake Park',
+      Property: 'Status',
+      Information: '2022-08-26 T08:25:15:208Z',
+    },
+    {
+      key: '8',
+      Property: 'Flavors',
+      Information: 'London No. Park',
     },
   ];
 
