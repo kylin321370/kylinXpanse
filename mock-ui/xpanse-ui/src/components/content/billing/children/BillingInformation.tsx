@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import '../../../../styles/billing/credit.css'
 import {Button, Input, Space, Modal, Select} from 'antd';
 import CreditCard from "./CreditCard";
 

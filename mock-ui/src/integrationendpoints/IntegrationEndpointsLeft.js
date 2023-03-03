@@ -31,7 +31,7 @@ function IntegrationEndpointsLeft(props) {
         <a><div>
           <img src={list[id].picture}/>
           {list[id].content}
-         </div></a>
+        </div></a>
       </>
   )
 

@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import './IntegrationEndpoints.css'
+import '../../../styles/integration/IntegrationEndpoints.css'
 
 function IntegrationEndpointsHeader(props: any) {
   return (

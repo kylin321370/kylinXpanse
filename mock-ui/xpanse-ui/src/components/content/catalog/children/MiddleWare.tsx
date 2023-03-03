@@ -8,6 +8,15 @@ import axios from "axios";
 
 
 function MiddleWare(): JSX.Element {
+  const responseBody:any = axios.get('http://192.168.0.97:8080/xpanse/register/service/3b6510ba-fe1c-4584-8fd3-2cb6381d4dbc').then(
+      function (response){
+        console.log(response)
+        console.log("data: "+response.data.data.id)
+        console.log("state: "+response.data.data.serviceState)
+        console.log("ocl****: "+response.data.data.ocl.version)
+      }
+  )
+
   const treeData: DataNode[] = [
     {
       title: <Space><CloudOutlined/>Compute</Space>,
@@ -15,7 +24,11 @@ function MiddleWare(): JSX.Element {
       selectable: false,
       checkable: false,
       children: [
-        {title: <Space><MessageOutlined/>Kubernetes</Space>, key: 'kubernetes',},
+        {title: <Space><MessageOutlined/>Kubernetes</Space>,
+          key: 'kubernetes',
+          selectable: true,
+          checkable: true,
+        },
         {title: <Space><Icon component={RancherSvg}/>Rancher</Space>, key: 'rancher'}
       ],
     },
@@ -76,6 +89,10 @@ function MiddleWare(): JSX.Element {
             onCheck={onCheck}
             treeData={treeData}
         />
+
+        <div>
+          responseBody
+        </div>
       </>
   );
 }

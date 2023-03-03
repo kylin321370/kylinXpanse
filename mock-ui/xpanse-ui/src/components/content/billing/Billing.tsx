@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import '../../../styles/billing/billing.css';
-import  '../../../styles/billing/credit.css';
 import  '../../../styles/billing/billingInformation.css';
+import '../../../styles/billing/credits.css'
 import Credits from "./children/Credits";
 import Invoices from "./children/Invoices";
 import Overview from "./children/Overview";
@@ -9,7 +9,7 @@ import BillingInformation from "./children/BillingInformation";
 import {Tabs} from 'antd';
 import {Breadcrumb, Layout, Menu, Switch, theme} from 'antd';
 import {Link} from "react-router-dom";
-import {HomeOutlined, UserOutlined, WarningOutlined} from "@ant-design/icons";
+import {BankOutlined, HomeOutlined, UserOutlined, WarningOutlined} from "@ant-design/icons";
 
 
 function Billing() {
@@ -43,12 +43,8 @@ function Billing() {
       <>
         <Breadcrumb>
           <Breadcrumb.Item><Link to={'/'}><HomeOutlined/><span>Home</span></Link></Breadcrumb.Item>
-          <Breadcrumb.Item>Billing</Breadcrumb.Item>
+          <Breadcrumb.Item><Link to={'/billing'}><BankOutlined /><span>Billing</span></Link></Breadcrumb.Item>
         </Breadcrumb>
-
-        {/*<div>*/}
-        {/*  <h1 className="typography-heading">Project Billing</h1>*/}
-        {/*</div>*/}
         <div className="xpanse-BillingGroupHeader">
           <div className="typography-heading">
             <h1>User-1030</h1>
