@@ -1,70 +1,67 @@
-import { Billing } from './Billing';
-import { Compute } from './Compute';
-import { ErrResponse } from './ErrResponse';
-import { Network } from './Network';
-import { Ocl } from './Ocl';
-import { SecurityGroup } from './SecurityGroup';
-import { SecurityRule } from './SecurityRule';
-import { ServiceStatus } from './ServiceStatus';
-import { Subnet } from './Subnet';
-import { SystemStatus } from './SystemStatus';
-import { UserData } from './UserData';
-import { Vm } from './Vm';
-import { Vpc } from './Vpc';
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * SPDX-FileCopyrightText: Huawei Inc.
+ */
 
-export * from './Billing';
-export * from './Compute';
-export * from './ErrResponse';
-export * from './Network';
-export * from './Ocl';
-export * from './SecurityGroup';
-export * from './SecurityRule';
-export * from './ServiceStatus';
-export * from './Storage';
-export * from './Subnet';
-export * from './SystemStatus';
-export * from './UserData';
-export * from './Vm';
-export * from './Vpc';
+import { Billing } from '../models/Billing';
+import { CloudServiceProvider } from '../models/CloudServiceProvider';
+import { DeployVariable } from '../models/DeployVariable';
+import { Deployment } from '../models/Deployment';
+import { Flavor } from '../models/Flavor';
+import { Ocl } from '../models/Ocl';
+import { Response } from '../models/Response';
+import { ServiceStatus } from '../models/ServiceStatus';
+import { SystemStatus } from '../models/SystemStatus';
+
+export * from '../models/Billing';
+export * from '../models/CloudServiceProvider';
+export * from '../models/DeployVariable';
+export * from '../models/Deployment';
+export * from '../models/Flavor';
+export * from '../models/Ocl';
+export * from '../models/Response';
+export * from '../models/ServiceStatus';
+export * from '../models/SystemStatus';
 
 /* tslint:disable:no-unused-variable */
-let primitives = ['string', 'boolean', 'double', 'integer', 'long', 'float', 'number', 'any'];
+let primitives = [
+  'string',
+  'boolean',
+  'double',
+  'integer',
+  'long',
+  'float',
+  'number',
+  'any'
+];
 
 const supportedMediaTypes: { [mediaType: string]: number } = {
   'application/json': Infinity,
   'application/octet-stream': 0,
-  'application/x-www-form-urlencoded': 0,
+  'application/x-www-form-urlencoded': 0
 };
+
 
 let enumsMap: Set<string> = new Set<string>([
   'BillingPeriodEnum',
   'BillingCurrencyEnum',
-  'OclCategoryEnum',
-  'SecurityRuleProtocolEnum',
-  'SecurityRuleDirectionEnum',
-  'SecurityRuleActionEnum',
+  'CloudServiceProviderNameEnum',
+  'DeployVariableKindEnum',
+  'DeploymentKindEnum',
   'ServiceStatusServiceStateEnum',
-  'StorageTypeEnum',
-  'StorageSizeUnitEnum',
-  'SystemStatusHealthStatusEnum',
-  'UserDataTypeEnum',
+  'SystemStatusHealthStatusEnum'
 ]);
 
 let typeMap: { [index: string]: any } = {
-  Billing: Billing,
-  Compute: Compute,
-  ErrResponse: ErrResponse,
-  Network: Network,
-  Ocl: Ocl,
-  SecurityGroup: SecurityGroup,
-  SecurityRule: SecurityRule,
-  ServiceStatus: ServiceStatus,
-  Storage: Storage,
-  Subnet: Subnet,
-  SystemStatus: SystemStatus,
-  UserData: UserData,
-  Vm: Vm,
-  Vpc: Vpc,
+  'Billing': Billing,
+  'CloudServiceProvider': CloudServiceProvider,
+  'DeployVariable': DeployVariable,
+  'Deployment': Deployment,
+  'Flavor': Flavor,
+  'Ocl': Ocl,
+  'Response': Response,
+  'ServiceStatus': ServiceStatus,
+  'SystemStatus': SystemStatus
 };
 
 export class ObjectSerializer {
@@ -108,8 +105,7 @@ export class ObjectSerializer {
       return data;
     } else if (primitives.indexOf(type.toLowerCase()) !== -1) {
       return data;
-    } else if (type.lastIndexOf('Array<', 0) === 0) {
-      // string.startsWith pre es6
+    } else if (type.lastIndexOf('Array<', 0) === 0) { // string.startsWith pre es6
       let subType: string = type.replace('Array<', ''); // Array<Type> => Type>
       subType = subType.substring(0, subType.length - 1); // Type> => Type
       let transformedData: any[] = [];
@@ -133,8 +129,7 @@ export class ObjectSerializer {
       if (enumsMap.has(type)) {
         return data;
       }
-      if (!typeMap[type]) {
-        // in case we dont know the type
+      if (!typeMap[type]) { // in case we dont know the type
         return data;
       }
 
@@ -146,11 +141,7 @@ export class ObjectSerializer {
       let instance: { [index: string]: any } = {};
       for (let index in attributeTypes) {
         let attributeType = attributeTypes[index];
-        instance[attributeType.baseName] = ObjectSerializer.serialize(
-          data[attributeType.name],
-          attributeType.type,
-          attributeType.format
-        );
+        instance[attributeType.baseName] = ObjectSerializer.serialize(data[attributeType.name], attributeType.type, attributeType.format);
       }
       return instance;
     }
@@ -163,8 +154,7 @@ export class ObjectSerializer {
       return data;
     } else if (primitives.indexOf(type.toLowerCase()) !== -1) {
       return data;
-    } else if (type.lastIndexOf('Array<', 0) === 0) {
-      // string.startsWith pre es6
+    } else if (type.lastIndexOf('Array<', 0) === 0) { // string.startsWith pre es6
       let subType: string = type.replace('Array<', ''); // Array<Type> => Type>
       subType = subType.substring(0, subType.length - 1); // Type> => Type
       let transformedData: any[] = [];
@@ -176,24 +166,18 @@ export class ObjectSerializer {
     } else if (type === 'Date') {
       return new Date(data);
     } else {
-      if (enumsMap.has(type)) {
-        // is Enum
+      if (enumsMap.has(type)) {// is Enum
         return data;
       }
 
-      if (!typeMap[type]) {
-        // dont know the type
+      if (!typeMap[type]) { // dont know the type
         return data;
       }
       let instance = new typeMap[type]();
       let attributeTypes = typeMap[type].getAttributeTypeMap();
       for (let index in attributeTypes) {
         let attributeType = attributeTypes[index];
-        let value = ObjectSerializer.deserialize(
-          data[attributeType.baseName],
-          attributeType.type,
-          attributeType.format
-        );
+        let value = ObjectSerializer.deserialize(data[attributeType.baseName], attributeType.type, attributeType.format);
         if (value !== undefined) {
           instance[attributeType.name] = value;
         }
@@ -201,6 +185,7 @@ export class ObjectSerializer {
       return instance;
     }
   }
+
 
   /**
    * Normalize media type

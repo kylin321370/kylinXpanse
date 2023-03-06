@@ -1,28 +1,30 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * SPDX-FileCopyrightText: Huawei Inc.
+ */
+
 import { Configuration } from '../configuration';
-
-import { ObservableOrchestratorApiApi } from './ObservableAPI';
-
-import { OrchestratorApiApiRequestFactory, OrchestratorApiApiResponseProcessor } from '../apis/OrchestratorApiApi';
 import { Ocl } from '../models/Ocl';
+import { Response } from '../models/Response';
 import { ServiceStatus } from '../models/ServiceStatus';
 import { SystemStatus } from '../models/SystemStatus';
-export class PromiseOrchestratorApiApi {
-  private api: ObservableOrchestratorApiApi;
+import { ObservableAdminApi, ObservableServiceApi, ObservableServiceVendorApi } from './ObservableAPI';
+
+import { AdminApiRequestFactory, AdminApiResponseProcessor } from '../apis/AdminApi';
+
+import { ServiceApiRequestFactory, ServiceApiResponseProcessor } from '../apis/ServiceApi';
+
+import { ServiceVendorApiRequestFactory, ServiceVendorApiResponseProcessor } from '../apis/ServiceVendorApi';
+
+export class PromiseAdminApi {
+  private api: ObservableAdminApi;
 
   public constructor(
     configuration: Configuration,
-    requestFactory?: OrchestratorApiApiRequestFactory,
-    responseProcessor?: OrchestratorApiApiResponseProcessor
+    requestFactory?: AdminApiRequestFactory,
+    responseProcessor?: AdminApiResponseProcessor
   ) {
-    this.api = new ObservableOrchestratorApiApi(configuration, requestFactory, responseProcessor);
-  }
-
-  /**
-   * @param ocl
-   */
-  public fetch(ocl: string, _options?: Configuration): Promise<void> {
-    const result = this.api.fetch(ocl, _options);
-    return result.toPromise();
+    this.api = new ObservableAdminApi(configuration, requestFactory, responseProcessor);
   }
 
   /**
@@ -32,12 +34,19 @@ export class PromiseOrchestratorApiApi {
     return result.toPromise();
   }
 
-  /**
-   * @param ocl
-   */
-  public register(ocl: Ocl, _options?: Configuration): Promise<void> {
-    const result = this.api.register(ocl, _options);
-    return result.toPromise();
+
+}
+
+
+export class PromiseServiceApi {
+  private api: ObservableServiceApi;
+
+  public constructor(
+    configuration: Configuration,
+    requestFactory?: ServiceApiRequestFactory,
+    responseProcessor?: ServiceApiResponseProcessor
+  ) {
+    this.api = new ObservableServiceApi(configuration, requestFactory, responseProcessor);
   }
 
   /**
@@ -50,7 +59,7 @@ export class PromiseOrchestratorApiApi {
   /**
    * @param managedServiceName
    */
-  public start(managedServiceName: string, _options?: Configuration): Promise<void> {
+  public start(managedServiceName: string, _options?: Configuration): Promise<Response> {
     const result = this.api.start(managedServiceName, _options);
     return result.toPromise();
   }
@@ -66,26 +75,95 @@ export class PromiseOrchestratorApiApi {
   /**
    * @param managedServiceName
    */
-  public stop(managedServiceName: string, _options?: Configuration): Promise<void> {
+  public stop(managedServiceName: string, _options?: Configuration): Promise<Response> {
     const result = this.api.stop(managedServiceName, _options);
     return result.toPromise();
   }
 
+
+}
+
+
+export class PromiseServiceVendorApi {
+  private api: ObservableServiceVendorApi;
+
+  public constructor(
+    configuration: Configuration,
+    requestFactory?: ServiceVendorApiRequestFactory,
+    responseProcessor?: ServiceVendorApiResponseProcessor
+  ) {
+    this.api = new ObservableServiceVendorApi(configuration, requestFactory, responseProcessor);
+  }
+
   /**
-   * @param managedServiceName
-   * @param ocl
+   * Get registered service using id.
+   * @param id id of registered service
    */
-  public update(managedServiceName: string, ocl: Ocl, _options?: Configuration): Promise<void> {
-    const result = this.api.update(managedServiceName, ocl, _options);
+  public detail(id: string, _options?: Configuration): Promise<Response> {
+    const result = this.api.detail(id, _options);
     return result.toPromise();
   }
 
   /**
-   * @param managedServiceName
-   * @param ocl
+   * Register new service with URL of Ocl file.
+   * @param oclLocation URL of Ocl file
    */
-  public update1(managedServiceName: string, ocl: string, _options?: Configuration): Promise<void> {
-    const result = this.api.update1(managedServiceName, ocl, _options);
+  public fetch(oclLocation: string, _options?: Configuration): Promise<Response> {
+    const result = this.api.fetch(oclLocation, _options);
     return result.toPromise();
   }
+
+  /**
+   * Update registered service using id and ocl file url.
+   * @param id id of registered service
+   * @param oclLocation URL of Ocl file
+   */
+  public fetchUpdate(id: string, oclLocation: string, _options?: Configuration): Promise<Response> {
+    const result = this.api.fetchUpdate(id, oclLocation, _options);
+    return result.toPromise();
+  }
+
+  /**
+   * List registered service with query params.
+   * @param cspName name of the service provider
+   * @param serviceName name of the service
+   * @param serviceVersion version of the service
+   */
+  public listRegisteredService(cspName?: string, serviceName?: string, serviceVersion?: string, _options?: Configuration): Promise<Response> {
+    const result = this.api.listRegisteredService(cspName, serviceName, serviceVersion, _options);
+    return result.toPromise();
+  }
+
+  /**
+   * Register new service using ocl model.
+   * @param ocl
+   */
+  public register(ocl: Ocl, _options?: Configuration): Promise<Response> {
+    const result = this.api.register(ocl, _options);
+    return result.toPromise();
+  }
+
+  /**
+   * Unregister registered service using id.
+   * @param id id of registered service
+   */
+  public unregister(id: string, _options?: Configuration): Promise<Response> {
+    const result = this.api.unregister(id, _options);
+    return result.toPromise();
+  }
+
+  /**
+   * Update registered service using id and ocl model.
+   * @param id id of registered service
+   * @param ocl
+   */
+  public update(id: string, ocl: Ocl, _options?: Configuration): Promise<Response> {
+    const result = this.api.update(id, ocl, _options);
+    return result.toPromise();
+  }
+
+
 }
+
+
+
