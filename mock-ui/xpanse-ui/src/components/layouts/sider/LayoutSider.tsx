@@ -5,7 +5,7 @@ import {Link } from 'react-router-dom';
 import {homePageRoute} from '../../utils/constants';
 function LayoutSider(): JSX.Element {
   const [collapsed, setCollapsed] = useState(false);
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const onSelected = function (cfg: any) {
     navigate(cfg.key);
   }
