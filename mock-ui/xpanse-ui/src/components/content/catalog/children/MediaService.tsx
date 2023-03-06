@@ -1,73 +1,95 @@
-import React from 'react';
-import {Space, Tree} from 'antd';
+import React, {useState} from 'react';
+import {Breadcrumb, Col, Row, Space, TabsProps, Tree} from 'antd';
 import type { DataNode, TreeProps } from 'antd/es/tree';
-import Icon, {CloudOutlined} from "@ant-design/icons";
-import { MessageOutlined } from '@ant-design/icons';
-import { ReactComponent as RancherSvg } from './img/rancher_icon.svg';
-
+import {HomeOutlined} from "@ant-design/icons";
+import ServicesTabs from "./ServicesTabs";
+import ServicesTab from "./ServiceTab";
 
 function MediaService(): JSX.Element {
-  const treeData: DataNode[] = [
+
+  const[selectProduct, setSelectProduct] = useState(false);
+  const items: TabsProps['items'] = [
     {
-      title: <Space><CloudOutlined />Compute</Space>,
-      key: 'compute',
-      selectable: false,
-      checkable: false,
-      children: [
-        { title: <Space><MessageOutlined />Kubernetes</Space>, key: 'kubernetes', },
-        { title: <Space><Icon component={RancherSvg}/>Rancher</Space>, key: 'rancher' }
-      ],
+      key: '1',
+      label: <h1 className='text-title'>Huawei</h1>,
+      children: <ServicesTab/>,
     },
     {
-      title: 'parent 1',
-      key: '0-0',
-      children: [
-        {
-          title: 'parent 1-0',
-          key: '0-0-0',
-          disabled: true,
-          children: [
-            {
-              title: 'leaf',
-              key: '0-0-0-0',
-              disableCheckbox: true,
-            },
-            {
-              title: 'leaf',
-              key: '0-0-0-1',
-            },
-          ],
-        },
-        {
-          title: 'parent 1-1',
-          key: '0-0-1',
-          children: [{ title: <span style={{ color: '#1890ff' }}>sss</span>, key: '0-0-1-0' }],
-        },
-      ],
+      key: '2',
+      label: <h1 className='text-title'>AWS</h1>,
+      children: <ServicesTab />,
+    },
+    {
+      key: '3',
+      label: <h1 className='text-title'>AZure</h1>,
+      children: <ServicesTab/>,
     },
   ];
-
+  const treeData: DataNode[] = [
+    {
+      title: 'Compute',
+      key: '0-1',
+      children:[
+        {
+          title:'Version-1',
+          key:'0-1-1',
+        },{
+          title:'Version-2',
+          key:'0-1-2',
+        },
+      ]
+    },
+    {
+      title: 'Rancher',
+      key: '0-2',
+      children:[
+        {
+          title:'Rancher-1',
+          key:'0-2-1',
+        },{
+          title:'Rancher-2',
+          key:'0-2-2',
+        },
+      ]
+    },
+    {
+      title: <Space>Kafka</Space> ,
+      key: '0-3',
+    },
+  ];
   const onSelect: TreeProps['onSelect'] = (selectedKeys, info) => {
     console.log('selected', selectedKeys, info);
+    setSelectProduct(true);
   };
 
   const onCheck: TreeProps['onCheck'] = (checkedKeys, info) => {
-    console.log('onCheck', checkedKeys, info);
+    console.log('onCheckerdewew3', checkedKeys, info);
   };
 
   return (
       <>
-        <Tree
-            checkable
-            defaultExpandedKeys={['0-0-0', '0-0-1']}
-            defaultSelectedKeys={['0-0-0', '0-0-1']}
-            defaultCheckedKeys={['0-0-0', '0-0-1']}
-            onSelect={onSelect}
-            onCheck={onCheck}
-            treeData={treeData}
-        />
+        <Breadcrumb>
+          <Breadcrumb.Item><HomeOutlined/><span> / Service Product</span></Breadcrumb.Item>
+        </Breadcrumb>
+        <Row gutter={24}>
+          <Col span={8}>
+            <Tree
+                checkable
+                defaultExpandedKeys={['0-0-0', '0-0-1']}
+                defaultSelectedKeys={['0-0-0', '0-0-1']}
+                defaultCheckedKeys={['0-0-0', '0-0-1']}
+                onSelect={onSelect}
+                onCheck={onCheck}
+                treeData={treeData}
+            />
+          </Col>
+          <Col span={16}>
+            {
+              selectProduct?<ServicesTabs items={items} />:<div/>
+            }
+          </Col>
+        </Row>
       </>
   );
 }
-
 export default MediaService;
