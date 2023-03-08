@@ -17,7 +17,7 @@ import org.eclipse.xpanse.modules.deployment.DeployResult;
 import org.eclipse.xpanse.modules.deployment.DeployTask;
 import org.eclipse.xpanse.modules.deployment.Deployment;
 import org.eclipse.xpanse.modules.deployment.deployers.terraform.exceptions.TerraformExecutorException;
-import org.eclipse.xpanse.modules.deployment.enums.DeployState;
+import org.eclipse.xpanse.modules.deployment.enums.TerraformExecState;
 import org.eclipse.xpanse.modules.ocl.loader.data.models.DeployVariable;
 import org.eclipse.xpanse.modules.ocl.loader.data.models.enums.Csp;
 import org.eclipse.xpanse.modules.ocl.loader.data.models.enums.DeployVariableKind;
@@ -56,9 +56,9 @@ public class TerraformDeployment implements Deployment {
 
         DeployResult deployResult = new DeployResult(task);
         if (StringUtils.isBlank(tfState)) {
-            deployResult.setState(DeployState.FAILED);
+            deployResult.setState(TerraformExecState.DEPLOY_FAILED);
         } else {
-            deployResult.setState(DeployState.SUCCESS);
+            deployResult.setState(TerraformExecState.DEPLOY_SUCCESS);
             deployResult.getRawResources().put("stateFile", tfState);
         }
 
@@ -66,6 +66,20 @@ public class TerraformDeployment implements Deployment {
             task.getDeployResourceHandler().handler(deployResult);
         }
         return deployResult;
+    }
+
+    @Override
+    public DeployResult destroy(DeployTask task) {
+        String workspace = getWorkspacePath(task.getId().toString());
+        TerraformExecutor executor =
+                new TerraformExecutor(getEnv(task), getVariables(task), workspace);
+        DeployResult result = new DeployResult(task);
+        if (executor.destroy()) {
+            result.setState(TerraformExecState.DESTROY_SUCCESS);
+        } else {
+            result.setState(TerraformExecState.DESTROY_FAILED);
+        }
+        return result;
     }
 
     /**
