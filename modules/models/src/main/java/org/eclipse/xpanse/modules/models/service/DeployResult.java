@@ -11,8 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import org.eclipse.xpanse.modules.models.enums.TerraformExecState;
 
 /**
