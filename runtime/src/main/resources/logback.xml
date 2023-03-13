@@ -5,17 +5,49 @@
   -->
 
 <configuration>
-  <appender class="ch.qos.logback.core.ConsoleAppender" name="Console">
+
+  <springProperty scope="context" name="log.path" source="log.path"/>
+
+  <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
       <Pattern>
-        %d{HH:mm:ss.SSS} [%t] %-5level %logger{36} [%X{SERVICE_ID} %X{PLUGIN_NAME} %X{TASK_TYPE} %X{SERVICE_NAME}]- %msg%n
+        %d{HH:mm:ss.SSS} [%t] %-5level %logger{36} [%X{SERVICE_ID} %X{PLUGIN_NAME} %X{TASK_TYPE}
+        %X{SERVICE_NAME}]- %msg%n
       </Pattern>
     </encoder>
   </appender>
+
+  <appender name="SIFT_HTTP_FILE" class="ch.qos.logback.classic.sift.SiftingAppender">
+    <discriminator>
+      <key>requestId</key>
+      <defaultValue>xpanse</defaultValue>
+    </discriminator>
+    <sift>
+      <appender name="${requestId}" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.path}/${requestId}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+          <fileNamePattern>${log.path}/${requestId}-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+          <timeBasedFileNamingAndTriggeringPolicy
+            class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+            <maxFileSize>10MB</maxFileSize>
+          </timeBasedFileNamingAndTriggeringPolicy>
+          <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+          <pattern>
+            %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} %X{SERVICE_ID} - %msg%n
+          </pattern>
+        </encoder>
+      </appender>
+    </sift>
+  </appender>
+
   <logger additivity="false" level="info" name="org.eclipse.xpanse">
     <appender-ref ref="Console"/>
+    <appender-ref ref="SIFT_HTTP_FILE"/>
   </logger>
-  <root level="error">
+  <root level="info">
     <appender-ref ref="Console"/>
+    <appender-ref ref="SIFT_HTTP_FILE"/>
   </root>
 </configuration>
