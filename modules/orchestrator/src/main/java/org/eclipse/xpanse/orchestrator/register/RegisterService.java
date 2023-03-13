@@ -7,9 +7,12 @@
 package org.eclipse.xpanse.orchestrator.register;
 
 import java.util.List;
+import java.util.UUID;
 import org.eclipse.xpanse.modules.database.register.RegisterServiceEntity;
-import org.eclipse.xpanse.modules.ocl.loader.data.models.Ocl;
-import org.eclipse.xpanse.modules.ocl.loader.data.models.query.RegisteredServiceQuery;
+import org.eclipse.xpanse.modules.models.query.RegisteredServiceQuery;
+import org.eclipse.xpanse.modules.models.resource.Ocl;
+import org.eclipse.xpanse.modules.models.view.CategoryOclVo;
+import org.eclipse.xpanse.modules.models.view.OclDetailVo;
 
 /**
  * This interface describes register service in charge of interacting with backend fundamental
@@ -21,8 +24,9 @@ public interface RegisterService {
      * register service using the ocl.
      *
      * @param ocl the Ocl model describing the register service.
+     * @return Returns the ID of registered service.
      */
-    void registerService(Ocl ocl);
+    UUID registerService(Ocl ocl);
 
     /**
      * Update registered service using id and the ocl file url.
@@ -37,8 +41,9 @@ public interface RegisterService {
      * register service using the url of ocl file.
      *
      * @param oclLocation url of the ocl file.
+     * @return Returns the ID of registered service.
      */
-    void registerServiceByUrl(String oclLocation) throws Exception;
+    UUID registerServiceByUrl(String oclLocation) throws Exception;
 
     /**
      * Update registered service using id and the ocl model.
@@ -55,7 +60,7 @@ public interface RegisterService {
      * @param registeredServiceId the ID of registered service.
      * @return registerServiceEntity
      */
-    RegisterServiceEntity getRegisteredService(String registeredServiceId);
+    OclDetailVo getRegisteredService(String registeredServiceId);
 
     /**
      * Search registered service by query model.
@@ -64,6 +69,14 @@ public interface RegisterService {
      * @return list of RegisterServiceEntity
      */
     List<RegisterServiceEntity> queryRegisteredServices(RegisteredServiceQuery query);
+
+    /**
+     * Search registered service tree by query model.
+     *
+     * @param query the query model for search registered service.
+     * @return Returns Tree of RegisterServiceEntity
+     */
+    List<CategoryOclVo> queryRegisteredServicesTree(RegisteredServiceQuery query);
 
     /**
      * Unregister service using the ID of registered service.

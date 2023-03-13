@@ -117,12 +117,10 @@ function RegisterPanel(): JSX.Element {
         if (fileList) {
             serviceVendorApi
                 .register(ocl as Ocl)
-                .then((result) => {
-                    if (result.success) {
-                        fileList[0].status = 'success';
-                        setRegisterResult('Service Registered Successfully');
-                        setIsRegisterSuccessful(true);
-                    }
+                .then(() => {
+                    fileList[0].status = 'success';
+                    setRegisterResult('Service Registered Successfully');
+                    setIsRegisterSuccessful(true);
                 })
                 .catch((error: any) => {
                     setRegisterResult(error.message);
