@@ -20,6 +20,7 @@ import org.eclipse.xpanse.modules.deployment.deployers.terraform.exceptions.Terr
 import org.eclipse.xpanse.modules.deployment.enums.TerraformExecState;
 import org.eclipse.xpanse.modules.ocl.loader.data.models.DeployVariable;
 import org.eclipse.xpanse.modules.ocl.loader.data.models.enums.Csp;
+import org.eclipse.xpanse.modules.ocl.loader.data.models.enums.DeployState;
 import org.eclipse.xpanse.modules.ocl.loader.data.models.enums.DeployVariableKind;
 import org.eclipse.xpanse.modules.ocl.loader.data.models.enums.DeployerKind;
 import org.springframework.stereotype.Component;
